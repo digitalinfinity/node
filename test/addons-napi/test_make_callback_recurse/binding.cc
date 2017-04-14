@@ -12,7 +12,7 @@ napi_value MakeCallback(napi_env env, napi_callback_info info) {
   napi_value recv = args[0];
   napi_value func = args[1];
 
-  napi_make_callback(env, 
+  napi_make_callback(env,
     recv, func, 0 /* argc */, nullptr /* argv */, nullptr /* result */);
 
   return recv;
@@ -20,9 +20,9 @@ napi_value MakeCallback(napi_env env, napi_callback_info info) {
 
 void Init(napi_env env, napi_value exports, napi_value module, void* priv) {
   napi_value fn;
-  NAPI_CALL_RETURN_VOID(env, 
+  NAPI_CALL_RETURN_VOID(env,
     napi_create_function(env, NULL, MakeCallback, NULL, &fn));
-  NAPI_CALL_RETURN_VOID(env, 
+  NAPI_CALL_RETURN_VOID(env,
     napi_set_named_property(env, exports, "makeCallback", fn));
 }
 

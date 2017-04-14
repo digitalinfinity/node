@@ -6,8 +6,7 @@ const vm = require('vm');
 const binding = require(`./build/${common.buildType}/binding`);
 const makeCallback = binding.makeCallback;
 
-function myMultiArgFunc(arg1, arg2, arg3)
-{
+function myMultiArgFunc(arg1, arg2, arg3) {
   console.log(`MyFunc was called with ${arguments.length} arguments`);
   assert.strictEqual(arg1, 1);
   assert.strictEqual(arg2, 2);
@@ -28,8 +27,9 @@ assert.strictEqual(42, makeCallback(process, common.mustCall(function(x) {
   return 42;
 }), 1337));
 
-assert.strictEqual(42, 
-  makeCallback(this, common.mustCall(myMultiArgFunc), 1, 2, 3));
+assert.strictEqual(42,
+                   makeCallback(this,
+                                common.mustCall(myMultiArgFunc), 1, 2, 3));
 
 // TODO(node-api): napi_make_callback needs to support
 // strings passed for the func argument
