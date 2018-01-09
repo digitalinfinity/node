@@ -19,6 +19,9 @@
 #define NODE_NET_STREAM_END_ENABLED() (0)
 #define NODE_GC_START(arg0, arg1, arg2)
 #define NODE_GC_DONE(arg0, arg1, arg2)
+
+#define NODE_GENERIC_EVENT(arg0)
+#define NODE_GENERIC_EVENT_ENABLED() (0)
 #endif
 
 #include "env-inl.h"
@@ -230,6 +233,16 @@ void lttng_gc_done(Isolate* isolate, GCType type, GCCallbackFlags flags) {
   NODE_GC_DONE(type, flags, isolate);
 }
 
+void LTTNG_GENERIC_EVENT(const FunctionCallbackInfo<Value>& args) {
+  if (!NODE_GENERIC_EVENT_ENABLED())
+    return;
+
+  String::Utf8Value _payload(args[0]);
+  const char* payload = (*_payload ? *_payload : "<payload conversion failed>");
+
+  NODE_GENERIC_EVENT(payload);
+}
+
 void InitLTTNG(Environment* env, Local<Object> target) {
   HandleScope scope(env->isolate());
 
@@ -243,11 +256,13 @@ void InitLTTNG(Environment* env, Local<Object> target) {
     { NODE_PROBE(LTTNG_HTTP_SERVER_REQUEST) },
     { NODE_PROBE(LTTNG_HTTP_SERVER_RESPONSE) },
     { NODE_PROBE(LTTNG_HTTP_CLIENT_REQUEST) },
-    { NODE_PROBE(LTTNG_HTTP_CLIENT_RESPONSE) }
+    { NODE_PROBE(LTTNG_HTTP_CLIENT_RESPONSE) },
+    { NODE_PROBE(LTTNG_GENERIC_EVENT) }
 #undef NODE_PROBE
   };
 
-  for (size_t i = 0; i < arraysize(tab); i++) {
+  const size_t tab_count = sizeof(tab)/sizeof(tab[0]);
+  for (size_t i = 0; i < tab_count; i++) {
     Local<String> key = OneByteString(env->isolate(), tab[i].name);
     Local<Value> val = env->NewFunctionTemplate(tab[i].func)->GetFunction();
     target->Set(key, val);

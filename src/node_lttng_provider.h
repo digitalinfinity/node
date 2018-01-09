@@ -92,12 +92,20 @@ void NODE_GC_DONE(v8::GCType type,
   tracepoint(node, gc_done, typeStr, flagsStr);
 }
 
+void NODE_GENERIC_EVENT(const char* payload)
+{
+  printf("Payload is %s\n", payload);
+  
+    tracepoint(node, generic_event, payload);
+}
+
 bool NODE_HTTP_SERVER_REQUEST_ENABLED() { return true; }
 bool NODE_HTTP_SERVER_RESPONSE_ENABLED() { return true; }
 bool NODE_HTTP_CLIENT_REQUEST_ENABLED() { return true; }
 bool NODE_HTTP_CLIENT_RESPONSE_ENABLED() { return true; }
 bool NODE_NET_SERVER_CONNECTION_ENABLED() { return true; }
 bool NODE_NET_STREAM_END_ENABLED() { return true; }
+bool NODE_GENERIC_EVENT_ENABLED() { return true; }
 
 }  // namespace node
 

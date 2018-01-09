@@ -25,7 +25,8 @@ TRACEPOINT_EVENT(
     ctf_string(url, url)
     ctf_string(method, method)
     ctf_string(forwardedFor, forwardedFor))
-
+    )
+    
 TRACEPOINT_EVENT(
   node,
   http_server_response,
@@ -37,6 +38,7 @@ TRACEPOINT_EVENT(
     ctf_integer(int, port, port)
     ctf_string(remote, remote)
     ctf_integer(int, fd, fd))
+    )
 
 TRACEPOINT_EVENT(
   node,
@@ -47,6 +49,7 @@ TRACEPOINT_EVENT(
   TP_FIELDS(
     ctf_string(url, url)
     ctf_string(method, method))
+    )
 
 TRACEPOINT_EVENT(
   node,
@@ -59,7 +62,8 @@ TRACEPOINT_EVENT(
     ctf_integer(int, port, port)
     ctf_string(remote, remote)
     ctf_integer(int, fd, fd))
-
+)
+  
 TRACEPOINT_EVENT(
   node,
   net_server_connection,
@@ -73,7 +77,8 @@ TRACEPOINT_EVENT(
     ctf_integer(int, port, port)
     ctf_integer(int, fd, fd)
     ctf_integer(int, buffered, buffered))
-
+)
+  
 TRACEPOINT_EVENT(
   node,
   net_stream_end,
@@ -85,7 +90,8 @@ TRACEPOINT_EVENT(
     ctf_string(remote, remote)
     ctf_integer(int, port, port)
     ctf_integer(int, fd, fd))
-
+)
+  
 TRACEPOINT_EVENT(
   node,
   gc_start,
@@ -106,7 +112,17 @@ TRACEPOINT_EVENT(
   TP_FIELDS(
     ctf_string(gctype, gctype)
     ctf_string(gcflags, gcflags))
-
+)
+  
+TRACEPOINT_EVENT(
+  node,
+  generic_event,
+  TP_ARGS(
+    const char*, payload),
+  TP_FIELDS(
+    ctf_string(payload, payload))
+)
+  
 #endif /* __NODE_LTTNG_TP_H */
 
 #include <lttng/tracepoint-event.h>
